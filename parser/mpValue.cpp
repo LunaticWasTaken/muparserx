@@ -679,10 +679,35 @@ const string_type& Value::GetString() const
 }
 
 //---------------------------------------------------------------------------
+// bool Value::GetBool() const
+// {
+// 	CheckType('b');
+// 	return m_val.real() == 1;
+// }
+
+// Allow implicit bool conversions
 bool Value::GetBool() const
 {
-	CheckType('b');
-	return m_val.real() == 1;
+  switch (m_cType)
+  {
+    case 'b':
+    case 'i':
+    case 'f':
+    case 'c':
+    {
+      return m_val.real() > 0.0;
+    }
+    case 's':
+    {
+      return !m_psVal->empty();
+    }
+    case 'm':
+      // Not sure how matrices are implemented, might need some more research...
+      return m_pvVal->GetRows() > 0 && m_pvVal->GetCols() > 0;
+    default:
+      // Unreachable, but the compiler throws a fit.
+      return false;
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -808,3 +833,4 @@ Value::operator bool()
 	return GetBool();
 }
 }  // namespace mu
+
