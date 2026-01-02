@@ -703,7 +703,7 @@ bool Value::GetBool() const
     }
     case 'm':
       // Not sure how matrices are implemented, might need some more research...
-      return m_pvVal->GetRows() > 0 && m_pvVal->GetCols() > 0;
+      return m_pvVal->GetRows() > 0 || m_pvVal->GetCols() > 0;
     default:
       // Unreachable, but the compiler throws a fit.
       return false;
